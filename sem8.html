@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Murtaza's Pro Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Outfit:wght@300;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-ultra: #020408;
+            --card-glass: rgba(15, 23, 42, 0.8);
+            --neon-primary: #00f2fe;
+            --neon-secondary: #7000ff;
+            --neon-accent: #ff00c1;
+            --text-glow: #e2e8f0;
+        }
+
+        /* Hide Number Spinners */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-ultra);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.15) 0%, transparent 40%);
+            color: var(--text-glow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: var(--card-glass);
+            backdrop-filter: blur(15px);
+            padding: 50px 40px;
+            border-radius: 40px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.9), 0 0 30px rgba(112, 0, 255, 0.2);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+
+        .tech-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(45deg, var(--neon-primary), var(--neon-secondary));
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 2rem;
+            color: white;
+            animation: pulse-glow 3s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 10px var(--neon-primary); }
+            to { box-shadow: 0 0 30px var(--neon-accent); }
+        }
+
+        h2 { 
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, var(--neon-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .dept-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--neon-primary);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        .welcome-msg {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 35px;
+            font-weight: 300;
+        }
+
+        .mode-container {
+            background: rgba(0,0,0,0.4);
+            padding: 6px;
+            border-radius: 20px;
+            display: flex;
+            gap: 5px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .mode-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #64748b;
+            padding: 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.4s;
+            font-weight: 600;
+            font-size: 0.85rem;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+        }
+
+        .input-group { margin-bottom: 25px; text-align: left; }
+        label { 
+            display: block; 
+            color: #cbd5e1; 
+            font-size: 0.8rem; 
+            margin-bottom: 10px; 
+            margin-left: 5px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        input:focus { 
+            border-color: var(--neon-primary); 
+            background: rgba(15, 23, 42, 1);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, var(--neon-secondary), var(--neon-accent));
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 20px;
+            width: 100%;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: 0.4s;
+            margin-top: 10px;
+            box-shadow: 0 10px 25px rgba(112, 0, 255, 0.3);
+        }
+
+        .action-btn:hover { 
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .subject-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; animation: slideUp 0.4s ease; }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        #result-display {
+            margin-top: 35px;
+            padding: 30px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .res-label { font-size: 0.9rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; }
+        .res-value { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; margin: 10px 0; }
+        .quote-box { font-size: 1rem; line-height: 1.6; color: #e2e8f0; font-weight: 300; font-style: italic; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="tech-logo">M</div>
+    <p class="dept-tag">Department of Computer Science</p>
+    <h2>Murtaza's Calculator</h2>
+    <p class="welcome-msg">Welcome to my Calculator</p>
+
+    <div class="mode-container">
+        <button class="mode-btn active" id="btn-gpa" onclick="setMode('gpa')">Calculate GPA</button>
+        <button class="mode-btn" id="btn-cgpa" onclick="setMode('cgpa')">Calculate CGPA</button>
+    </div>
+
+    <div id="setup-view">
+        <div id="cgpa-inputs" class="hidden">
+            <div class="input-group">
+                <label>Previous CGPA</label>
+                <input type="number" id="preCGPA" placeholder="0.00" step="0.01">
+            </div>
+            <div class="input-group">
+                <label>Total Credits Earned</label>
+                <input type="number" id="preCredits" placeholder="Total hours">
+            </div>
+        </div>
+        <div class="input-group">
+            <label>Number of Courses This Semester</label>
+            <input type="number" id="subCount" placeholder="e.g. 5">
+        </div>
+        <button class="action-btn" id="main-action-btn" onclick="startEngine()">Calculate GPA</button>
+    </div>
+
+    <div id="calc-view" class="hidden">
+        <div id="rows-wrapper"></div>
+        <button class="action-btn" onclick="generateFinalReport()">Calculate Final Score</button>
+    </div>
+
+    <div id="result-display" class="hidden"></div>
+</div>
+
+<script>
+    let currentMode = 'gpa';
+
+    function setMode(m) {
+        currentMode = m;
+        document.getElementById('btn-gpa').classList.toggle('active', m === 'gpa');
+        document.getElementById('btn-cgpa').classList.toggle('active', m === 'cgpa');
+        document.getElementById('cgpa-inputs').classList.toggle('hidden', m === 'gpa');
+        document.getElementById('result-display').classList.add('hidden');
+        
+        // Update main button text based on mode
+        const mainBtn = document.getElementById('main-action-btn');
+        mainBtn.innerText = (m === 'gpa') ? 'Calculate GPA' : 'Calculate CGPA';
+    }
+
+    function startEngine() {
+        const count = parseInt(document.getElementById('subCount').value);
+        if(!count || count < 1) return alert("Please enter the number of subjects.");
+
+        const wrapper = document.getElementById('rows-wrapper');
+        wrapper.innerHTML = `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:10px;">
+                <label style="text-align:center;">Grade Point</label>
+                <label style="text-align:center;">Credits</label>
+            </div>
+        `;
+        
+        for(let i=0; i<count; i++) {
+            wrapper.innerHTML += `
+                <div class="subject-row">
+                    <input type="number" step="0.01" class="g-input" placeholder="0-4.0">
+                    <input type="number" class="c-input" placeholder="Hours">
+                </div>`;
+        }
+        
+        document.getElementById('setup-view').classList.add('hidden');
+        document.getElementById('calc-view').classList.remove('hidden');
+    }
+
+    function generateFinalReport() {
+        const grades = document.querySelectorAll('.g-input');
+        const credits = document.querySelectorAll('.c-input');
+        
+        let sPoints = 0, sCredits = 0;
+        let hasError = false;
+
+        grades.forEach((g, i) => {
+            let val = parseFloat(g.value);
+            let cr = parseFloat(credits[i].value);
+            if (isNaN(val) || isNaN(cr) || val < 0 || val > 4) hasError = true;
+            sPoints += (val * cr);
+            sCredits += cr;
+        });
+
+        if (hasError || sCredits === 0) return alert("Invalid inputs. Ensure GPA is between 0-4.");
+
+        let finalVal = sPoints / sCredits;
+        let labelText = "Semester GPA";
+
+        if (currentMode === 'cgpa') {
+            labelText = "Final CGPA";
+            let pC = parseFloat(document.getElementById('preCGPA').value) || 0;
+            let pCr = parseFloat(document.getElementById('preCredits').value) || 0;
+            finalVal = ((pC * pCr) + sPoints) / (pCr + sCredits);
+        }
+
+        renderOutput(finalVal.toFixed(2), labelText);
+    }
+
+    function renderOutput(val, label) {
+        let n = parseFloat(val);
+        let msg = "";
+        let color = "#00f2fe"; // Default neon blue
+
+        if (n >= 3.5) {
+            msg = "🌟 Legendary Achievement! You've set the bar exceptionally high. Perfection is within your reach!";
+            color = "#00f2fe";
+        } else if (n >= 3.0) {
+            msg = "✨ Solid Performance! You're dominating the field. Maintain this flow to stay among the elite.";
+            color = "#a5ff00";
+        } else if (n >= 2.5) {
+            msg = "🎯 Good Progress! You're doing well, but we know you have the power to cross the 3.0 barrier. Aim higher!";
+            color = "#7000ff";
+        } else if (n >= 2.0) {
+            msg = "💪 Stay Focused! The road to success is under construction. Sharpen your skills and push for a 3.0+ next time.";
+            color = "#ffcc33";
+        } else {
+            msg = "🔥 Rise Again! 'The only way to do great work is to love what you do.' Restart your engines and make a comeback!";
+            color = "#ff00c1";
+        }
+
+        const resDiv = document.getElementById('result-display');
+        resDiv.classList.remove('hidden');
+        resDiv.innerHTML = `
+            <div class="res-label">${label}</div>
+            <div class="res-value" style="color:${color}; text-shadow: 0 0 15px ${color}66">${val}</div>
+            <div class="quote-box">${msg}</div>
+        `;
+        resDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
