@@ -50,24 +50,27 @@
             position: relative;
         }
 
-        .tech-logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 25px;
-            background: linear-gradient(45deg, var(--neon-primary), var(--neon-secondary));
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        /* Logo CSS */
+        .logo-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Syncopate', sans-serif;
-            font-size: 2rem;
-            color: white;
-            animation: pulse-glow 3s infinite alternate;
         }
 
-        @keyframes pulse-glow {
-            from { box-shadow: 0 0 10px var(--neon-primary); }
-            to { box-shadow: 0 0 30px var(--neon-accent); }
+        .main-logo {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px var(--neon-primary));
+            animation: logo-float 3s ease-in-out infinite;
+        }
+
+        @keyframes logo-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
         h2 { 
@@ -118,7 +121,6 @@
             transition: 0.4s;
             font-weight: 600;
             font-size: 0.85rem;
-            font-family: 'Outfit', sans-serif;
         }
 
         .mode-btn.active {
@@ -200,7 +202,10 @@
 <body>
 
 <div class="container">
-    <div class="tech-logo">M</div>
+    <div class="logo-wrapper">
+        <img src="Screenshot 2026-04-21 014202.png" alt="Murtaza Logo" class="main-logo">
+    </div>
+
     <p class="dept-tag">Department of Computer Science</p>
     <h2>Murtaza's Calculator</h2>
     <p class="welcome-msg">Welcome to my Calculator</p>
@@ -246,7 +251,6 @@
         document.getElementById('cgpa-inputs').classList.toggle('hidden', m === 'gpa');
         document.getElementById('result-display').classList.add('hidden');
         
-        // Update main button text based on mode
         const mainBtn = document.getElementById('main-action-btn');
         mainBtn.innerText = (m === 'gpa') ? 'Calculate GPA' : 'Calculate CGPA';
     }
@@ -308,22 +312,22 @@
     function renderOutput(val, label) {
         let n = parseFloat(val);
         let msg = "";
-        let color = "#00f2fe"; // Default neon blue
+        let color = "#00f2fe";
 
         if (n >= 3.5) {
-            msg = "🌟 Legendary Achievement! You've set the bar exceptionally high. Perfection is within your reach!";
+            msg = "🌟 Legendary Achievement! Perfection is within your reach!";
             color = "#00f2fe";
         } else if (n >= 3.0) {
-            msg = "✨ Solid Performance! You're dominating the field. Maintain this flow to stay among the elite.";
+            msg = "✨ Solid Performance! You're dominating the field.";
             color = "#a5ff00";
         } else if (n >= 2.5) {
-            msg = "🎯 Good Progress! You're doing well, but we know you have the power to cross the 3.0 barrier. Aim higher!";
+            msg = "🎯 Good Progress! Aim higher to cross the 3.0 barrier.";
             color = "#7000ff";
         } else if (n >= 2.0) {
-            msg = "💪 Stay Focused! The road to success is under construction. Sharpen your skills and push for a 3.0+ next time.";
+            msg = "💪 Stay Focused! The road to success is under construction.";
             color = "#ffcc33";
         } else {
-            msg = "🔥 Rise Again! 'The only way to do great work is to love what you do.' Restart your engines and make a comeback!";
+            msg = "🔥 Rise Again! Make a massive comeback next time!";
             color = "#ff00c1";
         }
 
